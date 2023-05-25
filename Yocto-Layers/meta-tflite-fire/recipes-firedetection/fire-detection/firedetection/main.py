@@ -6,12 +6,12 @@ import glob
 import sys
 
 def get_camera_index():
-    camIndex = [int(vi.split("/")[-1][5:]) for vi in glob.glob("/dev/video*")]
-    for ci in camIndex:
+    Index = [int(vi.split("/")[-1][5:]) for vi in glob.glob("/dev/video*")]
+    for ci in Index:
         try:
-            cap = cv2.VideoCapture(ci)
-            ret, frame = cap.read()
-            cap.release()
+            vcap = cv2.VideoCapture(ci)
+            ret, frame = vcap.read()
+            vcap.release()
             if ret == True:
                 return ci
         except:
@@ -43,12 +43,10 @@ def main(argv=None):
     interpreter = tflite.Interpreter("./model.tflite")
     interpreter.allocate_tensors()
 
-    print("Getting camera")
     cindex = get_camera_index()
     if cindex is None:
         print("Camera not found")
         return 0
-    print(f"Camera at {cindex}")
     cap = cv2.VideoCapture(cindex)
 
     while cap.isOpened():
